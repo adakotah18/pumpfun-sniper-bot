@@ -12,4 +12,5 @@ if DRY_RUN:
 else:
     print("LIVE MODE ENABLED — real trades will execute")
 
-# TODO: Add main trading logic (Phase 8 features: kill switch, dynamic scaling, alerts)
+# TODO: Add trading logic (Ichimoku, scaling, Telegram alerts, kill switch)
+
