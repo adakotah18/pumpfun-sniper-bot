@@ -70,3 +70,20 @@ http://localhost:3000
 ## Next Steps
 - Phase 9 → Real-time PnL Graph + Telegram Alerts
 - Phase 10 → Whale Tracking + Influencer Scoring
+---
+
+## Common Dashboard Warnings
+
+When running `npm install` or `npm run dev`, you might see warnings like:
+
+- `npm WARN deprecated ...`
+- `npm WARN ERESOLVE overriding peer dependency`
+- `npm audit` messages
+
+These are **normal** and can be ignored.  
+As long as you don’t see `ERROR` (in red) and `npm run dev` starts a local server at http://localhost:3000, you’re good.
+
+If you see an **ERROR** that stops the server:
+- Make sure Node.js (LTS version) is installed
+- Run `npm install` again
+- Then `npm run dev`
