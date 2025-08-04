@@ -51,7 +51,19 @@ pumpfun-sniper-bot/
 │── dashboard/
     │── package.json
     │── pages/
-    │── ...
+    │   └── index.js
+
+---
+
+## Dashboard (PnL Graph + Wallet Rotation)
+
+### Install and Run Dashboard
+cd dashboard
+npm install
+npm run dev
+
+Open browser at:  
+http://localhost:3000
 
 ---
 
