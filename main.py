@@ -1,50 +1,41 @@
-from dotenv import load_dotenv
-import os
-import time
-import requests
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from flask import Flask, jsonify, request
+from flask_cors import CORS  # This allows your frontend to communicate with the backend
 
-# Load environment variables
-load_dotenv()
+app = Flask(__name__)
+CORS(app)  # Allow cross-origin requests for communication with the React frontend
 
-# Config
-DRY_RUN = os.getenv("DRY_RUN", "False").lower() == "true"
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-SOL_PRIVATE_KEY = os.getenv("SOL_PRIVATE_KEY")
-SOL_BALANCE = float(os.getenv("SOL_BALANCE", "0"))
+# Example portfolio data
+portfolio = {
+    "balance": 117,
+    "value": 10000,
+    "pnL": 500
+}
 
-# Basic Bot Status
-status_msg = "LIVE MODE ENABLED — real trades will execute" if not DRY_RUN else "DRY RUN MODE ENABLED — safe mode"
+# Example trade logs
+trade_logs = [
+    {"time": "2023-08-01", "type": "BUY", "price": 50, "status": "Completed"},
+    {"time": "2023-08-02", "type": "SELL", "price": 60, "status": "Completed"}
+]
 
-print(status_msg)
-print("Bot is now listening for commands via Telegram...")
+# Route to get portfolio data
+@app.route('/api/portfolio', methods=['GET'])
+def get_portfolio():
+    return jsonify(portfolio)
 
-# Telegram Commands
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Sniper bot active. Use /buy, /sell, /status, /rotate, /kill, /resume.")
+# Route to get trade logs
+@app.route('/api/trade-logs', methods=['GET'])
+def get_trade_logs():
+    return jsonify(trade_logs)
 
-async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"Bot Status: {status_msg}\nBalance: {SOL_BALANCE} SOL")
+# Route to toggle bot control (if needed)
+@app.route('/api/bot-control', methods=['POST'])
+def control_bot():
+    data = request.get_json()
+    if data.get('running') is not None:
+        # You can integrate logic to start/stop the bot here
+        return jsonify({"status": "Bot toggled", "running": data['running']})
+    return jsonify({"status": "Invalid request"}), 400
 
-async def buy(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    amount = context.args[0] if context.args else "0.1"
-    await update.message.reply_text(f"[BUY] Executing trade for {amount} SOL (pump.fun)...")
-    # Placeholder: call pump.fun API here
-
-async def sell(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    amount = context.args[0] if context.args else "ALL"
-    await update.message.reply_text(f"[SELL] Executing sell for {amount} SOL...")
-    # Placeholder: call pump.fun API here
-
-# Initialize Telegram bot
-app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("status", status))
-app.add_handler(CommandHandler("buy", buy))
-app.add_handler(CommandHandler("sell", sell))
-
-# Run the bot
-if __name__ == "__main__":
-    app.run_polling()
+# Run the Flask app
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)  # This will start the server on http://localhost:5000
