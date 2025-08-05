@@ -1,5 +1,5 @@
 {
-  "name": "pumpfun-sniper-dashboard",
+  "name": "sniper-bot-dashboard",
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev",
@@ -7,8 +7,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "13.4.7",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "next": "^12.0.0",          // The Next.js framework
+    "react": "^18.0.0",         // Updated React version (v18)
+    "react-dom": "^18.0.0"      // Updated React DOM version (v18)
   }
 }
